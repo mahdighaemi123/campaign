@@ -660,6 +660,11 @@ class FAQBot:
                 await read_business_message(
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
+                await self.bot.send_message(
+                    chat_id=-4840287409,
+                    text="سلام و روز بخیر گفت",
+                    parse_mode=ParseMode.HTML
+                )
                 return
             if status == "inter_view_recived->voice_accept":
                 await self.message_sender.send_stored_message(
@@ -672,6 +677,11 @@ class FAQBot:
                 await read_business_message(
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
+                await self.bot.send_message(
+                    chat_id=-4840287409,
+                    text="مصاحبه تایید شد",
+                    parse_mode=ParseMode.HTML
+                )
                 return
 
             elif status == "inter_view_again":
@@ -685,6 +695,11 @@ class FAQBot:
                 await read_business_message(
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
+                await self.bot.send_message(
+                    chat_id=-4840287409,
+                    text="مصاحبه ناقص",
+                    parse_mode=ParseMode.HTML
+                )
                 return
 
             elif status == "user_name_recvied->send-salam-video-message":
@@ -697,6 +712,12 @@ class FAQBot:
 
                 await read_business_message(
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+
+                await self.bot.send_message(
+                    chat_id=-4840287409,
+                    text="ویس سلام",
+                    parse_mode=ParseMode.HTML
+                )
 
                 return
 
@@ -712,6 +733,12 @@ class FAQBot:
                 await read_business_message(
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
+                await self.bot.send_message(
+                    chat_id=-4840287409,
+                    text="لینک خرید",
+                    parse_mode=ParseMode.HTML
+                )
+
                 return
 
             elif status == "interview_first":
@@ -726,6 +753,11 @@ class FAQBot:
                 await read_business_message(
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
+                await self.bot.send_message(
+                    chat_id=-4840287409,
+                    text="اول مصاحبه کن",
+                    parse_mode=ParseMode.HTML
+                )
                 return
 
             # elif status != "skip":
@@ -755,6 +787,12 @@ class FAQBot:
 
                             await read_business_message(
                                 self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+
+                            await self.bot.send_message(
+                                chat_id=-4840287409,
+                                text="سوال متداول"+str(response.voice),
+                                parse_mode=ParseMode.HTML
+                            )
 
                         else:
                             # Step 5: Forward to admin group if no response found
