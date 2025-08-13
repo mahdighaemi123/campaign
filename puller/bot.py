@@ -59,7 +59,7 @@ class DatabaseManager:
             if business_message.get("text") == "SLEEP(o_o)":
                 BOT_SLEEPING = True
 
-                await self.bot.send_message(
+                await bot.send_message(
                     chat_id=business_message["chat"]["id"],
                     text="من رفتم بخوابم :|",
                     business_connection_id=business_message.get(
