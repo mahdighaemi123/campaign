@@ -649,6 +649,18 @@ class FAQBot:
 
             print(f"Status for chat {chat_id}: {status}")
 
+            if status == "hi":
+                await self.message_sender.send_stored_message(
+                    "689ccd6485a5fe90160f818d",
+                    chat_id,
+                    business_connection_id,
+                    status_ai_data
+                )
+
+                await read_business_message(
+                    self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+
+                return
             if status == "inter_view_recived->voice_accept":
                 await self.message_sender.send_stored_message(
                     "689cbe828ab715f165cfd050",
