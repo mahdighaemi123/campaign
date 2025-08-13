@@ -455,13 +455,20 @@ class MessageSender:
                     # caption=caption,
                     business_connection_id=business_connection_id
                 ),
-                "document": lambda: self.bot.send_document(
+                "document": lambda: self.bot.send_message(
                     chat_id=chat_id,
                     document=doc["file_id"],
                     caption=caption,
                     business_connection_id=business_connection_id
                 )
             }
+
+            if message_id_str == "689c97e69af3fd1e57fc86a9":
+                self.bot.send_message(
+                    chat_id=chat_id,
+                    text="https://wa.me/989361025864",
+                    business_connection_id=business_connection_id
+                )
 
             if msg_type in send_methods:
                 await send_methods[msg_type]()
