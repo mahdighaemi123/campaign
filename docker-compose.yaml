@@ -13,9 +13,9 @@ services:
     environment:
       - MONGODB_URL=mongodb://mongo_user:mongo_pass@mongodb:27017/campaign_pilot?authSource=admin
   ai:
-    build: ./aiـresponder
+    build: ./airesponder
     env_file:
-      - ./aiـresponder/.env
+      - ./airesponder/.env
     restart: always
     networks:
       - my_bridge
