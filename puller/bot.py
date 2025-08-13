@@ -84,8 +84,10 @@ class DatabaseManager:
 
             if sender_type == "client":
                 status = "NEW"
+
             elif sender_type == "admin":
                 status = "RESPONDED"
+                
             else:
                 status = "UNKNOWN"
 
@@ -123,7 +125,7 @@ class DatabaseManager:
             if "text" in message:
                 msg_type = "text"
                 content = message.get("text")
-                
+
             elif "photo" in message:
                 msg_type = "photo"
                 largest_photo = message["photo"][-1]  # largest resolution

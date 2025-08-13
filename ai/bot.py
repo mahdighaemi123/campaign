@@ -5,6 +5,7 @@ import os
 import re
 from datetime import datetime
 from typing import Dict, List, Optional
+from datetime import datetime, timedelta
 
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -166,11 +167,17 @@ class DatabaseManager:
 
     async def get_unread_chat(self) -> List[Dict]:
         """Get unread messages and atomically tag them as AI_SEEN"""
+
+        one_minute_ago = datetime.utcnow() - timedelta(minutes=9)
+
         try:
             result = await self.chats.find_one_and_update(
-                {"status": {"$eq": "NEW"}},
+                {"status": {"$eq": "NEW"},
+                 "last_message_date": {"$lte": one_minute_ago}
+                 },
                 {"$set": {"status": "AI_SEEN", "ai_processed_at": datetime.utcnow()}},
                 return_document=True,
+
                 sort=[("timestamp", 1)]
             )
             if result:
@@ -725,7 +732,7 @@ class FAQBot:
 
                 if faq_response:
                     for response in faq_response.responses:
-                        if not response.skip:
+                        if not response.skip and response.confidence >= 0.95:
                             # Step 4: Send FAQ responses
                             sent_count = await self.message_sender.send_faq_responses(
                                 faq_response, chat_id, business_connection_id, faq_ai_data
