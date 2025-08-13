@@ -1,0 +1,46 @@
+version: '3'
+name: campaign-pilot
+
+services:
+
+  tg-puller:
+    build: ./puller
+    env_file:
+      - ./puller/.env
+    restart: always
+    networks:
+      - my_bridge
+    environment:
+      - MONGODB_URL=mongodb://mongo_user:mongo_pass@mongodb:27017/campaign_pilot?authSource=admin
+  ai:
+    build: ./aiـresponder
+    env_file:
+      - ./aiـresponder/.env
+    restart: always
+    networks:
+      - my_bridge
+    environment:
+      - MONGODB_URL=mongodb://mongo_user:mongo_pass@mongodb:27017/campaign_pilot?authSource=admin
+
+  mongodb:
+    image: mongo:6.0
+    container_name: telegram_mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo_user
+      MONGO_INITDB_ROOT_PASSWORD: mongo_pass
+      MONGO_INITDB_DATABASE: campaign_pilot
+    networks:
+      - my_bridge
+
+volumes:
+  mongodb_data:
+
+
+networks:
+  my_bridge:
+    driver: bridge
