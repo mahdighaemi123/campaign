@@ -780,7 +780,7 @@ class FAQBot:
 
             elif status == "skip":
                 faq_response, faq_ai_data = await self.ai_client.get_faq_response(history)
-
+                forward_admin_is = False
                 if faq_response:
                     for response in faq_response.responses:
                         if not response.skip and response.confidence >= 0.95:
@@ -802,16 +802,16 @@ class FAQBot:
                             )
 
                         else:
-                            # Step 5: Forward to admin group if no response found
-                            user_question = await self.get_user_question(messages)
-                            await self.message_sender.forward_to_admin(chat_id, username, name, user_question, business_connection_id)
-                            await self.db_manager.mark_chat_as_forwarded(chat_id, business_connection_id)
-                            logger.info(
-                                f"Forwarded unanswered question from chat {chat_id} to admin")
-
+                            forward_admin_is = True
                 else:
-                    await self.message_sender.forward_to_admin(chat_id, username, name, messages[-1]['message_id'], business_connection_id)
+                    forward_admin_is = True
+
+                if forward_admin_is:
+                    user_question = await self.get_user_question(messages)
+                    await self.message_sender.forward_to_admin(chat_id, username, name, user_question, business_connection_id)
                     await self.db_manager.mark_chat_as_forwarded(chat_id, business_connection_id)
+                    logger.info(
+                        f"Forwarded unanswered question from chat {chat_id} to admin")
 
         except Exception as e:
             logger.error(f"Error processing chat {chat_id}: {e}")
