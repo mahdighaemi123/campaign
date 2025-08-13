@@ -668,7 +668,7 @@ class FAQBot:
                 return
             if status == "inter_view_recived->voice_accept":
                 await self.message_sender.send_stored_message(
-                    "689cd89d71425e1fdede8c76",
+                    "689cd96471425e1fdede8cc1",
                     chat_id,
                     business_connection_id,
                     status_ai_data
