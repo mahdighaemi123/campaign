@@ -56,7 +56,7 @@ class DatabaseManager:
         try:
             sender_type = self.get_sender_type(business_message)
 
-            if business_message.get("text") == "SLEEP(o_o)":
+            if business_message.get("text") == "/SLEEP":
                 BOT_SLEEPING = True
 
                 await bot.send_message(
