@@ -24,6 +24,8 @@ ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
 bot = Bot(token=BOT_TOKEN)
 OFFSET = None
 
+BOT_SLEEPING = False
+
 
 class DatabaseManager:
     def __init__(self):
@@ -49,9 +51,20 @@ class DatabaseManager:
         return "client"
 
     async def save_message(self, business_message):
+        global BOT_SLEEPING
         """Save business message to database"""
         try:
             sender_type = self.get_sender_type(business_message)
+
+            if business_message.get("text") == "SLEEP(o_o)":
+                BOT_SLEEPING = True
+
+                await self.bot.send_message(
+                    chat_id=business_message["chat"]["id"],
+                    text="من رفتم بخوابم :|",
+                    business_connection_id=business_message.get(
+                        "business_connection_id")
+                )
 
             message_doc = {
                 "message_id": business_message.get("message_id"),
@@ -87,7 +100,7 @@ class DatabaseManager:
 
             elif sender_type == "admin":
                 status = "RESPONDED"
-                
+
             else:
                 status = "UNKNOWN"
 
@@ -257,7 +270,7 @@ async def main():
     logger.info(f"🤖 Business bot started - Admin: @{ADMIN_USERNAME}")
 
     try:
-        while True:
+        while not BOT_SLEEPING:
             try:
                 updates = await bot.get_updates(
                     offset=OFFSET,
@@ -280,6 +293,10 @@ async def main():
             except Exception as e:
                 logger.error(f"Unexpected error: {e}")
                 await asyncio.sleep(10)
+
+        while 1:
+            logger.info("sleep")
+            await asyncio.sleep(1000)
 
     except KeyboardInterrupt:
         logger.info("Bot stopped by user")
