@@ -1,5 +1,5 @@
 version: '3'
-name: campaign-pilot
+name: c
 
 services:
 
@@ -13,9 +13,9 @@ services:
     environment:
       - MONGODB_URL=mongodb://mongo_user:mongo_pass@mongodb:27017/campaign_pilot?authSource=admin
   ai:
-    build: ./airesponder
+    build: ./ai
     env_file:
-      - ./airesponder/.env
+      - ./ai/.env
     restart: always
     networks:
       - my_bridge
