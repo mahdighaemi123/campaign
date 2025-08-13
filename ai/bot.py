@@ -802,6 +802,9 @@ class FAQBot:
                             logger.info(
                                 f"Forwarded unanswered question from chat {chat_id} to admin")
 
+                else:
+                    await self.message_sender.forward_to_admin(chat_id, username, name, messages[-1]['message_id'], business_connection_id)
+
         except Exception as e:
             logger.error(f"Error processing chat {chat_id}: {e}")
             # Mark chat as error for manual handling
