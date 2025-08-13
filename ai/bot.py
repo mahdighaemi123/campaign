@@ -35,7 +35,7 @@ class Config:
     DATABASE_NAME = os.getenv("DATABASE_NAME")
     ADMIN_USERNAME = os.getenv("ADMIN_USERNAME")
     # New: Telegram group ID for unanswered questions
-    ADMIN_GROUP_ID = os.getenv("ADMIN_GROUP_ID")
+    ADMIN_GROUP_ID = int(os.getenv("ADMIN_GROUP_ID"))
 
     # OpenAI settings
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
@@ -168,7 +168,7 @@ class DatabaseManager:
     async def get_unread_chat(self) -> List[Dict]:
         """Get unread messages and atomically tag them as AI_SEEN"""
 
-        one_minute_ago = datetime.utcnow() - timedelta(minutes=5)
+        one_minute_ago = datetime.utcnow() - timedelta(minutes=10)
 
         try:
             result = await self.chats.find_one_and_update(
