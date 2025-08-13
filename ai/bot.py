@@ -804,6 +804,7 @@ class FAQBot:
 
                 else:
                     await self.message_sender.forward_to_admin(chat_id, username, name, messages[-1]['message_id'], business_connection_id)
+                    await self.db_manager.mark_chat_as_forwarded(chat_id, business_connection_id)
 
         except Exception as e:
             logger.error(f"Error processing chat {chat_id}: {e}")
