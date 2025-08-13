@@ -296,6 +296,7 @@ async def main():
 
         while 1:
             logger.info("sleep")
+            logger.info(BOT_SLEEPING)
             await asyncio.sleep(10)
 
     except KeyboardInterrupt:
