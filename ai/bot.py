@@ -661,7 +661,7 @@ class FAQBot:
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
                 await self.bot.send_message(
-                    chat_id=-4840287409,
+                    chat_id=-1002788857939,
                     text="سلام و روز بخیر گفت",
                     parse_mode=ParseMode.HTML
                 )
@@ -678,7 +678,7 @@ class FAQBot:
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
                 await self.bot.send_message(
-                    chat_id=-4840287409,
+                    chat_id=-1002788857939,
                     text="مصاحبه تایید شد",
                     parse_mode=ParseMode.HTML
                 )
@@ -696,7 +696,7 @@ class FAQBot:
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
                 await self.bot.send_message(
-                    chat_id=-4840287409,
+                    chat_id=-1002788857939,
                     text="مصاحبه ناقص",
                     parse_mode=ParseMode.HTML
                 )
@@ -714,7 +714,7 @@ class FAQBot:
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
                 await self.bot.send_message(
-                    chat_id=-4840287409,
+                    chat_id=-1002788857939,
                     text="ویس سلام",
                     parse_mode=ParseMode.HTML
                 )
@@ -734,7 +734,7 @@ class FAQBot:
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
                 await self.bot.send_message(
-                    chat_id=-4840287409,
+                    chat_id=-1002788857939,
                     text="لینک خرید",
                     parse_mode=ParseMode.HTML
                 )
@@ -754,7 +754,7 @@ class FAQBot:
                     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
                 await self.bot.send_message(
-                    chat_id=-4840287409,
+                    chat_id=-1002788857939,
                     text="اول مصاحبه کن",
                     parse_mode=ParseMode.HTML
                 )
@@ -789,7 +789,7 @@ class FAQBot:
                                 self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
                             await self.bot.send_message(
-                                chat_id=-4840287409,
+                                chat_id=-1002788857939,
                                 text="سوال متداول"+str(response.voice),
                                 parse_mode=ParseMode.HTML
                             )
