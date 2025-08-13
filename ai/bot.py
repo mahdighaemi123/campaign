@@ -463,12 +463,12 @@ class MessageSender:
                 )
             }
 
-            if message_id_str == "689c97e69af3fd1e57fc86a9":
-                self.bot.send_message(
-                    chat_id=chat_id,
-                    text="https://wa.me/989361025864",
-                    business_connection_id=business_connection_id
-                )
+            # if message_id_str == "689c97e69af3fd1e57fc86a9":
+            #     self.bot.send_message(
+            #         chat_id=chat_id,
+            #         text="https://wa.me/989361025864",
+            #         business_connection_id=business_connection_id
+            #     )
 
             if msg_type in send_methods:
                 await send_methods[msg_type]()
@@ -507,6 +507,15 @@ class MessageSender:
                 }
 
                 if response.voice and response.voice in VOICE_MAP:
+
+                    if response.voice == "13":
+                        await self.message_sender.send_stored_message(
+                            "689ceac871425e1fdede925f",
+                            chat_id,
+                            business_connection_id,
+                            response_ai_data
+                        )
+
                     # Try to send voice message
                     await self.send_stored_message(
                         VOICE_MAP[response.voice],
