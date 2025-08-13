@@ -168,7 +168,7 @@ class DatabaseManager:
     async def get_unread_chat(self) -> List[Dict]:
         """Get unread messages and atomically tag them as AI_SEEN"""
 
-        one_minute_ago = datetime.utcnow() - timedelta(minutes=9)
+        one_minute_ago = datetime.utcnow() - timedelta(minutes=5)
 
         try:
             result = await self.chats.find_one_and_update(
