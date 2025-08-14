@@ -34,12 +34,47 @@ class DatabaseManager:
         self.messages = self.db.business_messages
         self.chats = self.db.business_chats
         self.ready_messages = self.db.ready_messages
+        self.setting = self.db.setting
 
     def is_admin(self, user_dict):
         """Check if user is admin by username"""
         if not user_dict or not user_dict.get("username"):
             return False
         return user_dict["username"].lower() == ADMIN_USERNAME.lower()
+
+    async def save_setting(self, key, value):
+        """Save a setting to the database"""
+        try:
+            # Use upsert to update if exists, insert if not
+            await self.setting.update_one(
+                {"key": key},
+                {"$set": {
+                    "key": key,
+                    "value": value,
+                    "updated_at": datetime.utcnow()
+                }},
+                upsert=True
+            )
+            logger.info(f"Setting '{key}' saved successfully")
+            return True
+        except Exception as e:
+            logger.error(f"Error saving setting '{key}': {e}")
+            return False
+
+    async def load_setting(self, key, default_value=None):
+        """Load a setting from the database"""
+        try:
+            setting_doc = await self.setting.find_one({"key": key})
+            if setting_doc:
+                logger.info(f"Setting '{key}' loaded successfully")
+                return setting_doc.get("value", default_value)
+            else:
+                logger.info(
+                    f"Setting '{key}' not found, returning default value")
+                return default_value
+        except Exception as e:
+            logger.error(f"Error loading setting '{key}': {e}")
+            return default_value
 
     def get_sender_type(self, business_message):
         """Determine sender type: 'client' or 'admin'"""
@@ -55,6 +90,14 @@ class DatabaseManager:
         """Save business message to database"""
         try:
             sender_type = self.get_sender_type(business_message)
+            message_id = business_message.get("message_id")
+
+            existing_message = await self.messages.find_one({"message_id": message_id})
+
+            if existing_message:
+                logger.info(
+                    f"Message with ID {message_id} already exists, skipping")
+                return False
 
             if business_message.get("text") == "/SLEEP":
                 BOT_SLEEPING = True
@@ -268,13 +311,14 @@ async def main():
     global OFFSET
     db_manager = DatabaseManager()
     logger.info(f"🤖 Business bot started - Admin: @{ADMIN_USERNAME}")
+    OFFSET = db_manager.load_setting("OFFSET", 0)
 
     try:
         while not BOT_SLEEPING:
             try:
                 updates = await bot.get_updates(
                     offset=OFFSET,
-                    limit=10,
+                    limit=1,
                     timeout=10,
                     allowed_updates=["message", "business_message"]
                 )
@@ -284,8 +328,11 @@ async def main():
                         process_update(update, db_manager) for update in updates
                     ])
                     OFFSET = updates[-1].update_id + 1
+                    db_manager.save_setting("OFFSET", OFFSET)
                 else:
                     await asyncio.sleep(1)
+
+                await asyncio.sleep(10)
 
             except TelegramError as e:
                 logger.error(f"Telegram error: {e}")
