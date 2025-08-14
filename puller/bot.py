@@ -311,14 +311,14 @@ async def main():
     global OFFSET
     db_manager = DatabaseManager()
     logger.info(f"🤖 Business bot started - Admin: @{ADMIN_USERNAME}")
-    OFFSET = db_manager.load_setting("OFFSET", 0)
+    OFFSET = await db_manager.load_setting("OFFSET", 0)
 
     try:
         while not BOT_SLEEPING:
             try:
                 updates = await bot.get_updates(
                     offset=OFFSET,
-                    limit=1,
+                    limit=10,
                     timeout=10,
                     allowed_updates=["message", "business_message"]
                 )
@@ -328,11 +328,11 @@ async def main():
                         process_update(update, db_manager) for update in updates
                     ])
                     OFFSET = updates[-1].update_id + 1
-                    db_manager.save_setting("OFFSET", OFFSET)
+                    await db_manager.save_setting("OFFSET", OFFSET)
                 else:
                     await asyncio.sleep(1)
 
-                await asyncio.sleep(10)
+                # await asyncio.sleep(10)
 
             except TelegramError as e:
                 logger.error(f"Telegram error: {e}")
