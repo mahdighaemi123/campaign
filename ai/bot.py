@@ -795,8 +795,8 @@ class FAQBot:
                         #     status_ai_data
                         # )
 
-                        await read_business_message(
-                            self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                        # await read_business_message(
+                        #     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
                         await self.bot.send_message(
                             chat_id=-1002788857939,
