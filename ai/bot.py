@@ -967,9 +967,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    # Set event loop policy for Windows compatibility
     if os.name == 'nt':
         asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
-
-    # Run the bot
     asyncio.run(main())
