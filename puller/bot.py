@@ -318,7 +318,7 @@ async def main():
             try:
                 updates = await bot.get_updates(
                     offset=OFFSET,
-                    limit=1,
+                    limit=10,
                     timeout=10,
                     allowed_updates=["message", "business_message"]
                 )
@@ -332,7 +332,7 @@ async def main():
                 else:
                     await asyncio.sleep(1)
 
-                await asyncio.sleep(10)
+                await asyncio.sleep(1)
 
             except TelegramError as e:
                 logger.error(f"Telegram error: {e}")
