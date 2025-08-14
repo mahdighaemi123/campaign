@@ -72,7 +72,7 @@ VOICE_MAP = {
     # ۱۲:شما از این ۹ ابزار دایرکتم ک تک ب تک میخواین توضیح بدید  ما چطور میتونیم تمرین کنیم ک قشنگ تسلط داشته باشیم؟
     "12": "689c97cc9af3fd1e57fc86a8",
     # ۱۳ : شرایط اقساط دارید؟
-    "13": "689c97e69af3fd1e57fc86a9",
+    "13": "689da04125b0ece6b34a9d9a",
     # ۱۴:شانس پروژه گرفتنم بین ادمینایی که چند ساله دارن کار میکنن و سابقه و رزومه دارن پایین نیست؟
     "14": "689c980f9af3fd1e57fc86aa",
     # ۱۵:چند ساعت در روز وقتم رو میگیره؟
@@ -510,7 +510,7 @@ class MessageSender:
 
                     if response.voice == "13":
                         await self.message_sender.send_stored_message(
-                            "689ceac871425e1fdede925f",
+                            "689da05925b0ece6b34a9da6",
                             chat_id,
                             business_connection_id,
                             response_ai_data
