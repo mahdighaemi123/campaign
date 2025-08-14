@@ -133,11 +133,10 @@ class DatabaseManager:
         result = await cursor.to_list(length=Config.MAX_HISTORY)
         return result[::-1]  # Reverse to get chronological order
 
-    def is_message_exist(self, chat_id: int, business_connection_id: str, stored_message_id: str) -> bool:
+    async def is_message_exist(self, chat_id: int, business_connection_id: str, stored_message_id: str) -> bool:
         """Check if a stored message was already sent to this chat"""
         try:
-            # Look for messages with this stored_message_id in this specific chat
-            doc = self.messages.find_one({
+            doc = await self.messages.find_one({
                 "chat_id": chat_id,
                 "business_connection_id": business_connection_id,
                 "ai_response_data.stored_message_id": stored_message_id
@@ -149,9 +148,21 @@ class DatabaseManager:
                 return True
 
             return False
-
         except Exception as e:
             logger.error(f"Error checking message existence: {e}")
+            return False
+
+    async def update_message_telegram_id(self, doc_id: ObjectId, telegram_message_id: int) -> bool:
+        """Update message document with Telegram message ID"""
+        try:
+            result = await self.messages.update_one(
+                {"_id": doc_id},
+                {"$set": {"message_id": telegram_message_id,
+                          "updated_at": datetime.utcnow()}}
+            )
+            return result.modified_count > 0
+        except Exception as e:
+            logger.error(f"Error updating message telegram ID: {e}")
             return False
 
     async def save_ai_response(self, chat_id: int, business_connection_id: str,
@@ -445,7 +456,7 @@ class MessageSender:
             text = caption or f"[{msg_type.upper()} MESSAGE] for [{ai_data.get('status')} STATUS]"
 
             stored_message_id = message_id_str
-            if self.db_manager.is_message_exist(chat_id, business_connection_id, stored_message_id):
+            if await self.db_manager.is_message_exist(chat_id, business_connection_id, stored_message_id):
                 logger.info("dup message")
                 return
 
@@ -537,7 +548,7 @@ class MessageSender:
                 if response.voice and response.voice in VOICE_MAP:
 
                     if response.voice == "13":
-                        await self.message_sender.send_stored_message(
+                        await self.send_stored_message(
                             "689da05925b0ece6b34a9da6",
                             chat_id,
                             business_connection_id,
@@ -818,9 +829,15 @@ class FAQBot:
             elif status == "skip":
                 faq_response, faq_ai_data = await self.ai_client.get_faq_response(history)
                 forward_admin_is = False
-                if faq_response:
+
+                has_valid_response = all(
+                    not response.skip and response.confidence >= 0.96
+                    for response in faq_response.responses
+                )
+
+                if has_valid_response and faq_response:
                     for response in faq_response.responses:
-                        if not response.skip and response.confidence >= 0.95:
+                        if not response.skip and response.confidence >= 0.96:
                             # Step 4: Send FAQ responses
                             sent_count = await self.message_sender.send_faq_responses(
                                 faq_response, chat_id, business_connection_id, faq_ai_data
@@ -839,8 +856,6 @@ class FAQBot:
                                 parse_mode=ParseMode.HTML
                             )
 
-                        else:
-                            forward_admin_is = True
                 else:
                     forward_admin_is = True
 
@@ -862,7 +877,10 @@ class FAQBot:
 
     async def one_round(self):
         unread_chat = await self.db_manager.get_unread_chat()
-        await self.process_chat(unread_chat)
+        if unread_chat:
+            await self.process_chat(unread_chat)
+        else:
+            logger.debug("No unread chats found")
 
     async def run(self):
         """Main bot loop"""
