@@ -890,7 +890,7 @@ class FAQBot:
             while True:
                 tasks = [self.one_round() for _ in range(1)]
                 await asyncio.gather(*tasks, return_exceptions=True)
-                await asyncio.sleep(5)
+                await asyncio.sleep(3)
 
         except KeyboardInterrupt:
             logger.info("Bot stopped by user")
