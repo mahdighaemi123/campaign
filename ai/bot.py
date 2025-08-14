@@ -742,7 +742,7 @@ class FAQBot:
 آیدی چت: {chat_id}
 
 پیام:
-{user_question}"""
+{messages[-1]['message_id']}"""
 
         business_connection_id = chat['business_connection_id']
 
