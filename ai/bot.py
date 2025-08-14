@@ -788,12 +788,12 @@ class FAQBot:
                         business_connection_id,
                         "689cd96471425e1fdede8cc1"
                     )):
-                        await self.message_sender.send_stored_message(
-                            "689cd96471425e1fdede8cc1",
-                            chat_id,
-                            business_connection_id,
-                            status_ai_data
-                        )
+                        # await self.message_sender.send_stored_message(
+                        #     "689cd96471425e1fdede8cc1",
+                        #     chat_id,
+                        #     business_connection_id,
+                        #     status_ai_data
+                        # )
 
                         await read_business_message(
                             self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
