@@ -133,6 +133,27 @@ class DatabaseManager:
         result = await cursor.to_list(length=Config.MAX_HISTORY)
         return result[::-1]  # Reverse to get chronological order
 
+    def is_message_exist(self, chat_id: int, business_connection_id: str, stored_message_id: str) -> bool:
+        """Check if a stored message was already sent to this chat"""
+        try:
+            # Look for messages with this stored_message_id in this specific chat
+            doc = self.messages.find_one({
+                "chat_id": chat_id,
+                "business_connection_id": business_connection_id,
+                "ai_response_data.stored_message_id": stored_message_id
+            })
+
+            if doc:
+                logger.info(
+                    f"Found duplicate stored message {stored_message_id} in chat {chat_id}")
+                return True
+
+            return False
+
+        except Exception as e:
+            logger.error(f"Error checking message existence: {e}")
+            return False
+
     async def save_ai_response(self, chat_id: int, business_connection_id: str,
                                text: str, ai_data: Dict, message_type: str = "ai_response") -> Optional[ObjectId]:
         """Save AI response to messages collection"""
@@ -414,18 +435,25 @@ class MessageSender:
         """Send a stored message from database"""
         try:
             doc = await self.db_manager.get_stored_message(message_id_str)
+
             if not doc:
                 logger.error(f"Message {message_id_str} not found in database")
                 return False
 
             msg_type = doc.get("type")
             caption = doc.get("caption")
+            text = caption or f"[{msg_type.upper()} MESSAGE] for [{ai_data.get('status')} STATUS]"
+
+            stored_message_id = message_id_str
+            if self.db_manager.is_message_exist(chat_id, business_connection_id, stored_message_id):
+                logger.info("dup message")
+                return
 
             if ai_data:
                 await self.db_manager.save_ai_response(
                     chat_id=chat_id,
                     business_connection_id=business_connection_id,
-                    text=caption or f"[{msg_type.upper()} MESSAGE] for [{ai_data.get('status')} STATUS]",
+                    text=text,
                     ai_data={**ai_data, "stored_message_id": message_id_str,
                              "original_type": msg_type},
                     message_type="stored_media"
@@ -841,9 +869,9 @@ class FAQBot:
 
         try:
             while True:
-                tasks = [self.one_round() for _ in range(10)]
+                tasks = [self.one_round() for _ in range(1)]
                 await asyncio.gather(*tasks, return_exceptions=True)
-                await asyncio.sleep(1)
+                await asyncio.sleep(10)
 
         except KeyboardInterrupt:
             logger.info("Bot stopped by user")
