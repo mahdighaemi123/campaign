@@ -805,7 +805,7 @@ class FAQBot:
 آیدی چت: {chat_id}
 
 پیام:
-{messages[-1]['message_id']}"""
+{messages[-1]}"""
 
                         await self.bot.send_message(
                             chat_id=-1002788857939,
