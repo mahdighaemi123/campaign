@@ -757,104 +757,130 @@ class FAQBot:
             if status == "hi":
 
                 if not is_link:
-                    await self.message_sender.send_stored_message(
-                        "689dab0bb7b7ce7565a4b28e",
+                    if not (await self.db_manager.is_message_exist(
                         chat_id,
                         business_connection_id,
-                        status_ai_data
-                    )
+                        "689dab0bb7b7ce7565a4b28e"
+                    )):
 
-                    await read_business_message(
-                        self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                        await self.message_sender.send_stored_message(
+                            "689dab0bb7b7ce7565a4b28e",
+                            chat_id,
+                            business_connection_id,
+                            status_ai_data
+                        )
 
-                    await self.bot.send_message(
-                        chat_id=-1002788857939,
-                        text="سلام و روز بخیر گفت" + f"\n @{username}",
-                        parse_mode=ParseMode.HTML
-                    )
+                        await read_business_message(
+                            self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+
+                        await self.bot.send_message(
+                            chat_id=-1002788857939,
+                            text="سلام و روز بخیر گفت" + f"\n @{username}",
+                            parse_mode=ParseMode.HTML
+                        )
                 return
             if status == "inter_view_recived->voice_accept":
 
                 if not is_link:
-                    await self.message_sender.send_stored_message(
-                        "689cd96471425e1fdede8cc1",
+
+                    if not (await self.db_manager.is_message_exist(
                         chat_id,
                         business_connection_id,
-                        status_ai_data
-                    )
+                        "689cd96471425e1fdede8cc1"
+                    )):
+                        await self.message_sender.send_stored_message(
+                            "689cd96471425e1fdede8cc1",
+                            chat_id,
+                            business_connection_id,
+                            status_ai_data
+                        )
 
-                    await read_business_message(
-                        self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                        await read_business_message(
+                            self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
-                    await self.bot.send_message(
-                        chat_id=-1002788857939,
-                        text="مصاحبه تایید شد" + f"\n @{username}",
-                        parse_mode=ParseMode.HTML
-                    )
+                        await self.bot.send_message(
+                            chat_id=-1002788857939,
+                            text="مصاحبه تایید شد" + f"\n @{username}",
+                            parse_mode=ParseMode.HTML
+                        )
                 return
 
-            elif status == "inter_view_again":
-                if not is_link:
-                    await self.message_sender.send_stored_message(
-                        "689ca7229af3fd1e57fc86cf",
-                        chat_id,
-                        business_connection_id,
-                        status_ai_data
-                    )
+            # elif status == "inter_view_again":
+            #     if not is_link:
+            #         await self.message_sender.send_stored_message(
+            #             "689ca7229af3fd1e57fc86cf",
+            #             chat_id,
+            #             business_connection_id,
+            #             status_ai_data
+            #         )
 
-                    await read_business_message(
-                        self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+            #         await read_business_message(
+            #             self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
-                    await self.bot.send_message(
-                        chat_id=-1002788857939,
-                        text="مصاحبه ناقص" + f"\n @{username}",
-                        parse_mode=ParseMode.HTML
-                    )
-                return
+            #         await self.bot.send_message(
+            #             chat_id=-1002788857939,
+            #             text="مصاحبه ناقص" + f"\n @{username}",
+            #             parse_mode=ParseMode.HTML
+            #         )
+            #     return
 
             elif status == "user_name_recvied->send-salam-video-message":
                 if not is_link:
-                    await self.message_sender.send_stored_message(
-                        "689cb9098ab715f165cfd030",
+
+                    if not (await self.db_manager.is_message_exist(
                         chat_id,
                         business_connection_id,
-                        status_ai_data
-                    )
+                        "689cb9098ab715f165cfd030"
+                    )):
 
-                    await read_business_message(
-                        self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                        await self.message_sender.send_stored_message(
+                            "689cb9098ab715f165cfd030",
+                            chat_id,
+                            business_connection_id,
+                            status_ai_data
+                        )
 
-                    await self.bot.send_message(
-                        chat_id=-1002788857939,
-                        text="ویس سلام" + f"\n @{username}",
-                        parse_mode=ParseMode.HTML
-                    )
+                        await read_business_message(
+                            self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+
+                        await self.bot.send_message(
+                            chat_id=-1002788857939,
+                            text="ویس سلام" + f"\n @{username}",
+                            parse_mode=ParseMode.HTML
+                        )
 
                 return
 
             elif status == "ready->send_cta_and_link":
 
                 if not is_link:
-                    await self.db_manager.mark_chat_as_link(
-                        chat_id,
-                        business_connection_id
-                    )
 
-                    await self.message_sender.send_stored_message(
-                        "689cb213ab59a3ec1b86e6ff",
+                    if not (await self.db_manager.is_message_exist(
                         chat_id,
                         business_connection_id,
-                        status_ai_data
-                    )
+                        "689cb213ab59a3ec1b86e6ff"
+                    )):
 
-                    await read_business_message(
-                        self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                        await self.db_manager.mark_chat_as_link(
+                            chat_id,
+                            business_connection_id
+                        )
 
-                    await self.bot.send_message(
-                        chat_id=-1002788857939,
-                        text="لینک خرید" + f"\n @{username}",
-                        parse_mode=ParseMode.HTML
-                    )
+                        await self.message_sender.send_stored_message(
+                            "689cb213ab59a3ec1b86e6ff",
+                            chat_id,
+                            business_connection_id,
+                            status_ai_data
+                        )
+
+                        await read_business_message(
+                            self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+
+                        await self.bot.send_message(
+                            chat_id=-1002788857939,
+                            text="لینک خرید" + f"\n @{username}",
+                            parse_mode=ParseMode.HTML
+                        )
 
                 return
 
@@ -862,21 +888,27 @@ class FAQBot:
 
                 if not is_link:
 
-                    await self.message_sender.send_stored_message(
-                        "689cbb648ab715f165cfd042",
+                    if not (await self.db_manager.is_message_exist(
                         chat_id,
                         business_connection_id,
-                        status_ai_data
-                    )
+                        "689cbb648ab715f165cfd042"
+                    )):
 
-                    await read_business_message(
-                        self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                        await self.message_sender.send_stored_message(
+                            "689cbb648ab715f165cfd042",
+                            chat_id,
+                            business_connection_id,
+                            status_ai_data
+                        )
 
-                    await self.bot.send_message(
-                        chat_id=-1002788857939,
-                        text="اول مصاحبه کن" + f"\n @{username}",
-                        parse_mode=ParseMode.HTML
-                    )
+                        await read_business_message(
+                            self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+
+                        await self.bot.send_message(
+                            chat_id=-1002788857939,
+                            text="اول مصاحبه کن" + f"\n @{username}",
+                            parse_mode=ParseMode.HTML
+                        )
                 return
 
             # elif status != "skip":
