@@ -706,7 +706,7 @@ class FAQBot:
 
                 await self.bot.send_message(
                     chat_id=-1002788857939,
-                    text="سلام و روز بخیر گفت",
+                    text="سلام و روز بخیر گفت" + f"\n @{username}",
                     parse_mode=ParseMode.HTML
                 )
                 return
@@ -723,7 +723,7 @@ class FAQBot:
 
                 await self.bot.send_message(
                     chat_id=-1002788857939,
-                    text="مصاحبه تایید شد",
+                    text="مصاحبه تایید شد" + f"\n @{username}",
                     parse_mode=ParseMode.HTML
                 )
                 return
@@ -741,7 +741,7 @@ class FAQBot:
 
                 await self.bot.send_message(
                     chat_id=-1002788857939,
-                    text="مصاحبه ناقص",
+                    text="مصاحبه ناقص" + f"\n @{username}",
                     parse_mode=ParseMode.HTML
                 )
                 return
@@ -759,7 +759,7 @@ class FAQBot:
 
                 await self.bot.send_message(
                     chat_id=-1002788857939,
-                    text="ویس سلام",
+                    text="ویس سلام" + f"\n @{username}",
                     parse_mode=ParseMode.HTML
                 )
 
@@ -779,7 +779,7 @@ class FAQBot:
 
                 await self.bot.send_message(
                     chat_id=-1002788857939,
-                    text="لینک خرید",
+                    text="لینک خرید" + f"\n @{username}",
                     parse_mode=ParseMode.HTML
                 )
 
@@ -799,7 +799,7 @@ class FAQBot:
 
                 await self.bot.send_message(
                     chat_id=-1002788857939,
-                    text="اول مصاحبه کن",
+                    text="اول مصاحبه کن" + f"\n @{username}",
                     parse_mode=ParseMode.HTML
                 )
                 return
@@ -834,7 +834,8 @@ class FAQBot:
 
                             await self.bot.send_message(
                                 chat_id=-1002788857939,
-                                text="سوال متداول"+str(response.voice),
+                                text="سوال متداول" +
+                                str(response.voice) + f"\n @{username}",
                                 parse_mode=ParseMode.HTML
                             )
 
