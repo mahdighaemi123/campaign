@@ -706,7 +706,7 @@ class FAQBot:
 
             if status == "hi":
                 await self.message_sender.send_stored_message(
-                    "689dab0bb7b7ce7565a4b28e",
+                    "689dabcab7b7ce7565a4b2a5",
                     chat_id,
                     business_connection_id,
                     status_ai_data
