@@ -722,39 +722,39 @@ class FAQBot:
                 )
                 return
             if status == "inter_view_recived->voice_accept":
-                await self.message_sender.send_stored_message(
-                    "689cd96471425e1fdede8cc1",
-                    chat_id,
-                    business_connection_id,
-                    status_ai_data
-                )
+                # await self.message_sender.send_stored_message(
+                #     "689cd96471425e1fdede8cc1",
+                #     chat_id,
+                #     business_connection_id,
+                #     status_ai_data
+                # )
 
-                await read_business_message(
-                    self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                # await read_business_message(
+                #     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
-                await self.bot.send_message(
-                    chat_id=-1002788857939,
-                    text="مصاحبه تایید شد" + f"\n @{username}",
-                    parse_mode=ParseMode.HTML
-                )
+                # await self.bot.send_message(
+                #     chat_id=-1002788857939,
+                #     text="مصاحبه تایید شد" + f"\n @{username}",
+                #     parse_mode=ParseMode.HTML
+                # )
                 return
 
             elif status == "inter_view_again":
-                await self.message_sender.send_stored_message(
-                    "689ca7229af3fd1e57fc86cf",
-                    chat_id,
-                    business_connection_id,
-                    status_ai_data
-                )
+                # await self.message_sender.send_stored_message(
+                #     "689ca7229af3fd1e57fc86cf",
+                #     chat_id,
+                #     business_connection_id,
+                #     status_ai_data
+                # )
 
-                await read_business_message(
-                    self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                # await read_business_message(
+                #     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
-                await self.bot.send_message(
-                    chat_id=-1002788857939,
-                    text="مصاحبه ناقص" + f"\n @{username}",
-                    parse_mode=ParseMode.HTML
-                )
+                # await self.bot.send_message(
+                #     chat_id=-1002788857939,
+                #     text="مصاحبه ناقص" + f"\n @{username}",
+                #     parse_mode=ParseMode.HTML
+                # )
                 return
 
             elif status == "user_name_recvied->send-salam-video-message":
@@ -778,41 +778,41 @@ class FAQBot:
 
             elif status == "ready->send_cta_and_link":
 
-                await self.message_sender.send_stored_message(
-                    "689cb213ab59a3ec1b86e6ff",
-                    chat_id,
-                    business_connection_id,
-                    status_ai_data
-                )
+                # await self.message_sender.send_stored_message(
+                #     "689cb213ab59a3ec1b86e6ff",
+                #     chat_id,
+                #     business_connection_id,
+                #     status_ai_data
+                # )
 
-                await read_business_message(
-                    self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                # await read_business_message(
+                #     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
-                await self.bot.send_message(
-                    chat_id=-1002788857939,
-                    text="لینک خرید" + f"\n @{username}",
-                    parse_mode=ParseMode.HTML
-                )
+                # await self.bot.send_message(
+                #     chat_id=-1002788857939,
+                #     text="لینک خرید" + f"\n @{username}",
+                #     parse_mode=ParseMode.HTML
+                # )
 
                 return
 
             elif status == "interview_first":
 
-                await self.message_sender.send_stored_message(
-                    "689cbb648ab715f165cfd042",
-                    chat_id,
-                    business_connection_id,
-                    status_ai_data
-                )
+                # await self.message_sender.send_stored_message(
+                #     "689cbb648ab715f165cfd042",
+                #     chat_id,
+                #     business_connection_id,
+                #     status_ai_data
+                # )
 
-                await read_business_message(
-                    self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                # await read_business_message(
+                #     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
-                await self.bot.send_message(
-                    chat_id=-1002788857939,
-                    text="اول مصاحبه کن" + f"\n @{username}",
-                    parse_mode=ParseMode.HTML
-                )
+                # await self.bot.send_message(
+                #     chat_id=-1002788857939,
+                #     text="اول مصاحبه کن" + f"\n @{username}",
+                #     parse_mode=ParseMode.HTML
+                # )
                 return
 
             # elif status != "skip":
@@ -827,44 +827,44 @@ class FAQBot:
             #     return
 
             elif status == "skip":
-                faq_response, faq_ai_data = await self.ai_client.get_faq_response(history)
+                # faq_response, faq_ai_data = await self.ai_client.get_faq_response(history)
                 forward_admin_is = False
 
-                has_valid_response = all(
-                    not response.skip and response.confidence >= 0.96
-                    for response in faq_response.responses
-                )
+                # has_valid_response = all(
+                #     not response.skip and response.confidence >= 0.96
+                #     for response in faq_response.responses
+                # )
 
-                if has_valid_response and faq_response:
-                    for response in faq_response.responses:
-                        if not response.skip and response.confidence >= 0.96:
-                            # Step 4: Send FAQ responses
-                            sent_count = await self.message_sender.send_faq_responses(
-                                faq_response, chat_id, business_connection_id, faq_ai_data
-                            )
-                            await self.db_manager.mark_chat_as_answered(chat_id, business_connection_id)
-                            logger.info(
-                                f"Sent {sent_count} FAQ responses to chat {chat_id}")
+                # if has_valid_response and faq_response:
+                #     for response in faq_response.responses:
+                #         if not response.skip and response.confidence >= 0.96:
+                #             # Step 4: Send FAQ responses
+                #             sent_count = await self.message_sender.send_faq_responses(
+                #                 faq_response, chat_id, business_connection_id, faq_ai_data
+                #             )
+                #             await self.db_manager.mark_chat_as_answered(chat_id, business_connection_id)
+                #             logger.info(
+                #                 f"Sent {sent_count} FAQ responses to chat {chat_id}")
 
-                            await read_business_message(
-                                self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+                #             await read_business_message(
+                #                 self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
 
-                            await self.bot.send_message(
-                                chat_id=-1002788857939,
-                                text="سوال متداول" +
-                                str(response.voice) + f"\n @{username}",
-                                parse_mode=ParseMode.HTML
-                            )
+                #             await self.bot.send_message(
+                #                 chat_id=-1002788857939,
+                #                 text="سوال متداول" +
+                #                 str(response.voice) + f"\n @{username}",
+                #                 parse_mode=ParseMode.HTML
+                #             )
 
-                else:
-                    forward_admin_is = True
+                # else:
+                #     forward_admin_is = True
 
-                if forward_admin_is:
-                    user_question = await self.get_user_question(messages)
-                    await self.message_sender.forward_to_admin(chat_id, username, name, user_question, business_connection_id)
-                    await self.db_manager.mark_chat_as_forwarded(chat_id, business_connection_id)
-                    logger.info(
-                        f"Forwarded unanswered question from chat {chat_id} to admin")
+                # if forward_admin_is:
+                #     user_question = await self.get_user_question(messages)
+                #     await self.message_sender.forward_to_admin(chat_id, username, name, user_question, business_connection_id)
+                #     await self.db_manager.mark_chat_as_forwarded(chat_id, business_connection_id)
+                #     logger.info(
+                #         f"Forwarded unanswered question from chat {chat_id} to admin")
 
         except Exception as e:
             logger.error(f"Error processing chat {chat_id}: {e}")
