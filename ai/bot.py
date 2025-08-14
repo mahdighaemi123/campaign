@@ -735,15 +735,6 @@ class FAQBot:
         except KeyError:
             name = "-"
 
-            message2 = f""" مصاحبه تایید شد
-
-نام کاربر: {name}
-آیدی کاربر: @{username}
-آیدی چت: {chat_id}
-
-پیام:
-{messages[-1]['message_id']}"""
-
         business_connection_id = chat['business_connection_id']
 
         logger.info(f"Processing chat {chat_id}")
@@ -806,6 +797,15 @@ class FAQBot:
 
                         # await read_business_message(
                         #     self.bot, business_connection_id, chat_id, messages[-1]['message_id'])
+
+                        message2 = f""" مصاحبه تایید شد
+
+نام کاربر: {name}
+آیدی کاربر: @{username}
+آیدی چت: {chat_id}
+
+پیام:
+{messages[-1]['message_id']}"""
 
                         await self.bot.send_message(
                             chat_id=-1002788857939,
